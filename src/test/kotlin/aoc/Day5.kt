@@ -21,7 +21,7 @@ class Day5 {
             val expected = 107430936L
             assertEquals(
                 expected, day5.solveP1(
-                    "/home/lea/yseop/AoC/src/test/resources/input5"
+                    "./src/test/resources/input5"
                 )
             )
         }
@@ -31,7 +31,7 @@ class Day5 {
             val expected = 46L
             assertEquals(
                 expected, day5.solveP2(
-                    "/home/lea/yseop/AoC/src/test/resources/inputExample5"
+                    "./src/test/resources/inputExample5"
                 )
             )
         }

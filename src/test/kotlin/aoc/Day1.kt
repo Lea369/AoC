@@ -38,7 +38,7 @@ class Day1 {
             val expected = 54087
             assertEquals(
                 expected, day1.calibrate(
-                    "/home/lea/yseop/AoC/src/test/resources/input1"
+                    "./src/test/resources/input1"
                 )
             )
         }

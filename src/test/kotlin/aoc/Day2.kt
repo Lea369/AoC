@@ -23,7 +23,7 @@ class Day2 {
             val expected = 8
             assertEquals(
                 expected, day2.solveP1(
-                    "/home/lea/yseop/AoC/src/test/resources/inputExample2"
+                    "./src/test/resources/inputExample2"
                 )
             )
         }
@@ -33,7 +33,7 @@ class Day2 {
             val expected = 2286
             assertEquals(
                 expected, day2.solveP2(
-                    "/home/lea/yseop/AoC/src/test/resources/inputExample2"
+                    "./src/test/resources/inputExample2"
                 )
             )
         }
@@ -43,7 +43,7 @@ class Day2 {
             val expected = 66909
             assertEquals(
                 expected, day2.solveP2(
-                    "/home/lea/yseop/AoC/src/test/resources/input2"
+                    "./src/test/resources/input2"
                 )
             )
         }
