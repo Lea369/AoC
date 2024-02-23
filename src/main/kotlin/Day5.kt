@@ -27,8 +27,7 @@ class Day5 {
                         acc.add(ChainLink(link = mutableListOf()))
                     } else {
                         val rawlist = rawline.split(" ").filter { it.isNotEmpty() }.map { it.toLong() }
-                        acc.last().link.add(Conversion(rawlist[1]..rawlist[1] + rawlist[2], rawlist[0] - rawlist[1]))
-                        acc.last().link.sortBy { it.range.first }
+                        acc.last().link.add(Conversion(rawlist[1]..rawlist[1] + rawlist[2] - 1, rawlist[0] - rawlist[1]))
                     }
                     acc
                 }
