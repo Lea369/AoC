@@ -3,22 +3,39 @@ package aoc
 import Day5
 import kotlin.test.Test
 import kotlin.test.assertEquals
+import org.assertj.core.api.Assertions.assertThat
 
 class Day5Test {
     private val day5 = Day5()
 
     @Test
-    fun testPart1() {
+    fun should_convertRawLinesToSeedLocationChain() {
+        val rawLinesForSeedToSoil: List<String> = listOf(" ", "seed-to-soil map:", "50 98 2", "52 50 48")
+
+        val seedToSoilChain = day5.convertRawLinesToSeedLocationChain(rawLinesForSeedToSoil);
+
+        val expectedSeedToSoilChain =  Day5.ChainLink(
+            link = mutableListOf(
+                Day5.Conversion(range = 98L..99L, offset = -48),
+                Day5.Conversion(range = 50L..97L, offset = 2),
+            )
+        )
+
+        assertThat(seedToSoilChain).containsExactly(expectedSeedToSoilChain);
+    }
+
+    @Test
+    fun should_findMinimumLocationForSeed_FromSimpleSeed() {
         val expected = 107430936L
         assertEquals(
-            expected, day5.solveP1(
+            expected, day5.solveForSimpleSeedInput(
                 "./src/test/resources/input5"
             )
         )
     }
 
     @Test
-    fun testPart2() {
+    fun should_findMinimumLocationForSeed_FromSeedRange() {
         val expected = 46L
         assertEquals(
             expected, day5.solveP2(
@@ -26,4 +43,5 @@ class Day5Test {
             )
         )
     }
+
 }

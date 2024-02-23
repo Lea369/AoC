@@ -3,35 +3,42 @@ import java.nio.file.Paths
 import java.util.stream.Collectors
 
 class Day5 {
-    data class Conversion(val range: LongRange, val diff: Long)
+    data class Conversion(val range: LongRange, val offset: Long)
+    data class ChainLink(val link: MutableList<Conversion>);
 
-    fun solveP1(s: String): Long {
+    fun solveForSimpleSeedInput(s: String): Long {
         val rawLines: List<String> = Files.lines(Paths.get(s)).collect(Collectors.toList())
-        val inputNumbers: List<Long> =
+        val inputSeeds: List<Long> =
             rawLines[0].split(":")[1].split(" ").filter { it != "" }.map { it.toLong() }
-        val maps: List<List<Conversion>> = rawLines.filterIndexed() { i, _ -> i != 0 }.filter { it.isNotEmpty() }
-            .fold(mutableListOf<MutableList<Conversion>>()) { acc, rawline ->
-                if (acc.isEmpty() || !rawline[0].isDigit()) {
-                    acc.add(mutableListOf())
-                } else {
-                    val rawlist = rawline.split(" ").filter { it.isNotEmpty() }.map { it.toLong() }
-                    acc.last().add(Conversion(rawlist[1]..rawlist[1] + rawlist[2], rawlist[0] - rawlist[1]))
-                    acc.last().sortBy { it.range.first }
-                }
-                acc
-            }
+        val seedToLocationChain: List<ChainLink> = convertRawLinesToSeedLocationChain(rawLines)
 
-        return inputNumbers.map {
+        return inputSeeds.map {
             var result: Long = it
-            maps.forEach { result = processNumber(result, it) }
+            seedToLocationChain.forEach { result = processNumber(result, it) }
             result
         }.min()
     }
 
-    private fun processNumber(result: Long, conversions: List<Conversion>): Long {
-        val conversion = conversions.filter { result in it.range }
+    fun convertRawLinesToSeedLocationChain(rawLines: List<String>): List<ChainLink> {
+        val seedToLocationChain: List<ChainLink> =
+            rawLines.filterIndexed() { i, _ -> i != 0 }.filter { it.isNotEmpty() }
+                .fold(mutableListOf<ChainLink>()) { acc, rawline ->
+                    if (acc.isEmpty() || !rawline[0].isDigit()) {
+                        acc.add(ChainLink(link = mutableListOf()))
+                    } else {
+                        val rawlist = rawline.split(" ").filter { it.isNotEmpty() }.map { it.toLong() }
+                        acc.last().link.add(Conversion(rawlist[1]..rawlist[1] + rawlist[2], rawlist[0] - rawlist[1]))
+                        acc.last().link.sortBy { it.range.first }
+                    }
+                    acc
+                }
+        return seedToLocationChain
+    }
+
+    private fun processNumber(result: Long, conversions: ChainLink): Long {
+        val conversion = conversions.link.filter { result in it.range }
         return if (conversion.size == 1) {
-            result + conversion[0].diff
+            result + conversion[0].offset
         } else result
     }
 
@@ -78,7 +85,7 @@ class Day5 {
             .filter { it != 0L..0L }
             .map { r ->
                 val diff =
-                    conversions.filter { conv -> r.first in conv.range }.getOrElse(0) { Conversion(0L..0L, 0L) }.diff
+                    conversions.filter { conv -> r.first in conv.range }.getOrElse(0) { Conversion(0L..0L, 0L) }.offset
                 (r.first + diff)..<(r.last + diff)
             }.toList()
     }
