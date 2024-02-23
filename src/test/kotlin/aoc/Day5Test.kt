@@ -10,14 +10,14 @@ class Day5Test {
 
     @Test
     fun should_convertRawLinesToSeedLocationChain() {
-        val rawLinesForSeedToSoil: List<String> = listOf(" ", "seed-to-soil map:", "50 98 2", "52 50 48")
+        val rawLinesForSeedToSoil: List<String> = listOf(" ", "seed-to-soil map:", "50 98 3", "52 50 48")
 
         val seedToSoilChain = day5.convertRawLinesToSeedLocationChain(rawLinesForSeedToSoil);
 
         val expectedSeedToSoilChain =  Day5.ChainLink(
             link = mutableListOf(
-                Day5.Conversion(range = 98L..99L, offset = -48),
-                Day5.Conversion(range = 50L..97L, offset = 2),
+                Day5.Conversion(sourceRange = 98L..100L, offset = -48),
+                Day5.Conversion(sourceRange = 50L..97L, offset = 2),
             )
         )
 

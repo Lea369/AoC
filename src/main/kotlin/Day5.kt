@@ -3,8 +3,23 @@ import java.nio.file.Paths
 import java.util.stream.Collectors
 
 class Day5 {
-    data class Conversion(val range: LongRange, val offset: Long)
-    data class ChainLink(val link: MutableList<Conversion>);
+    data class Conversion(val sourceRange: LongRange, val offset: Long) {
+        companion object {
+            fun fromXToLocationBounds(bounds: XToLocationBounds): Conversion {
+                return Conversion(bounds.beginSource..< bounds.beginSource + bounds.rangeLength, bounds.beginDestination - bounds.beginSource)
+            }
+        }
+    }
+    data class ChainLink(val link: MutableList<Conversion>)
+
+    data class XToLocationBounds(val beginDestination: Long, val beginSource: Long, val rangeLength: Long) {
+        companion object {
+            fun fromLine(rawline: String): XToLocationBounds {
+                val rawlist: List<Long> = rawline.split(" ").filter { it.isNotEmpty() }.map { it.toLong() }
+                return XToLocationBounds(rawlist[0], rawlist[1], rawlist[2])
+            }
+        }
+    }
 
     fun solveForSimpleSeedInput(s: String): Long {
         val rawLines: List<String> = Files.lines(Paths.get(s)).collect(Collectors.toList())
@@ -22,12 +37,12 @@ class Day5 {
     fun convertRawLinesToSeedLocationChain(rawLines: List<String>): List<ChainLink> {
         val seedToLocationChain: List<ChainLink> =
             rawLines.filterIndexed() { i, _ -> i != 0 }.filter { it.isNotEmpty() }
-                .fold(mutableListOf<ChainLink>()) { acc, rawline ->
+                .fold(mutableListOf()) { acc, rawline ->
                     if (acc.isEmpty() || !rawline[0].isDigit()) {
                         acc.add(ChainLink(link = mutableListOf()))
                     } else {
-                        val rawlist = rawline.split(" ").filter { it.isNotEmpty() }.map { it.toLong() }
-                        acc.last().link.add(Conversion(rawlist[1]..rawlist[1] + rawlist[2] - 1, rawlist[0] - rawlist[1]))
+                        val bounds = XToLocationBounds.fromLine(rawline)
+                        acc.last().link.add(Conversion.fromXToLocationBounds(bounds))
                     }
                     acc
                 }
@@ -35,7 +50,7 @@ class Day5 {
     }
 
     private fun processNumber(result: Long, conversions: ChainLink): Long {
-        val conversion = conversions.link.filter { result in it.range }
+        val conversion = conversions.link.filter { result in it.sourceRange }
         return if (conversion.size == 1) {
             result + conversion[0].offset
         } else result
@@ -74,7 +89,7 @@ class Day5 {
 
     private fun processOneRangeInOneMap(range: LongRange, conversions: List<Conversion>): List<LongRange> {
         val boundaries =
-            (conversions.flatMap { listOf(it.range.first, it.range.last + 1) } + listOf(
+            (conversions.flatMap { listOf(it.sourceRange.first, it.sourceRange.last + 1) } + listOf(
                 range.first,
                 range.last + 1
             )).sorted().filter { it >= range.first && it <= range.last + 1 }
@@ -84,7 +99,7 @@ class Day5 {
             .filter { it != 0L..0L }
             .map { r ->
                 val diff =
-                    conversions.filter { conv -> r.first in conv.range }.getOrElse(0) { Conversion(0L..0L, 0L) }.offset
+                    conversions.filter { conv -> r.first in conv.sourceRange }.getOrElse(0) { Conversion(0L..0L, 0L) }.offset
                 (r.first + diff)..<(r.last + diff)
             }.toList()
     }
