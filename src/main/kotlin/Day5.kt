@@ -1,45 +1,11 @@
-package aoc
-
-import org.junit.jupiter.api.Nested
 import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.stream.Collectors
-import kotlin.test.Test
-import kotlin.test.assertEquals
 
 class Day5 {
-
     data class Conversion(val range: LongRange, val diff: Long)
 
-    @Nested
-    internal inner class Day5Test {
-
-        private val day5: Day5 = Day5()
-
-        @Test
-        fun testPart1() {
-            val expected = 107430936L
-            assertEquals(
-                expected, day5.solveP1(
-                    "./src/test/resources/input5"
-                )
-            )
-        }
-
-        @Test
-        fun testPart2() {
-            val expected = 46L
-            assertEquals(
-                expected, day5.solveP2(
-                    "./src/test/resources/inputExample5"
-                )
-            )
-        }
-
-
-    }
-
-    private fun solveP1(s: String): Long {
+    fun solveP1(s: String): Long {
         val rawLines: List<String> = Files.lines(Paths.get(s)).collect(Collectors.toList())
         val inputNumbers: List<Long> =
             rawLines[0].split(":")[1].split(" ").filter { it != "" }.map { it.toLong() }
@@ -69,7 +35,7 @@ class Day5 {
         } else result
     }
 
-    private fun solveP2(s: String): Long {
+    fun solveP2(s: String): Long {
         val rawLines: List<String> = Files.lines(Paths.get(s)).collect(Collectors.toList())
 
         val inputRanges: List<LongRange> = rawLines[0].split(":")[1].split(" ")
@@ -101,7 +67,6 @@ class Day5 {
     }
 
     private fun processOneRangeInOneMap(range: LongRange, conversions: List<Conversion>): List<LongRange> {
-
         val boundaries =
             (conversions.flatMap { listOf(it.range.first, it.range.last + 1) } + listOf(
                 range.first,
