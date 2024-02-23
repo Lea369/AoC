@@ -12,16 +12,15 @@ class Day5Test {
     fun should_convertRawLinesToSeedLocationChain() {
         val rawLinesForSeedToSoil: List<String> = listOf(" ", "seed-to-soil map:", "50 98 3", "52 50 48")
 
-        val seedToSoilChain = day5.convertRawLinesToSeedLocationChain(rawLinesForSeedToSoil);
+        val actualSeedToSoilChain = day5.convertRawLinesToSeedLocationChain(rawLinesForSeedToSoil);
 
-        val expectedSeedToSoilChain =  Day5.ChainLink(
-            link = mutableListOf(
+        val expectedSeedToSoilChain =  Day5.CropParameterCompatibilityMapping(
+            cropParameter = mutableListOf(
                 Day5.Conversion(sourceRange = 98L..100L, offset = -48),
                 Day5.Conversion(sourceRange = 50L..97L, offset = 2),
             )
         )
-
-        assertThat(seedToSoilChain).containsExactly(expectedSeedToSoilChain);
+        assertThat(actualSeedToSoilChain).containsExactly(expectedSeedToSoilChain);
     }
 
     @Test
@@ -43,5 +42,4 @@ class Day5Test {
             )
         )
     }
-
 }

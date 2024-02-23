@@ -3,6 +3,8 @@ import java.nio.file.Paths
 import java.util.stream.Collectors
 
 class Day5 {
+    data class CropParameterCompatibilityMapping(val cropParameter: MutableList<Conversion>)
+
     data class Conversion(val sourceRange: LongRange, val offset: Long) {
         companion object {
             fun fromXToLocationBounds(bounds: XToLocationBounds): Conversion {
@@ -10,7 +12,6 @@ class Day5 {
             }
         }
     }
-    data class ChainLink(val link: MutableList<Conversion>)
 
     data class XToLocationBounds(val beginDestination: Long, val beginSource: Long, val rangeLength: Long) {
         companion object {
@@ -25,35 +26,35 @@ class Day5 {
         val rawLines: List<String> = Files.lines(Paths.get(s)).collect(Collectors.toList())
         val inputSeeds: List<Long> =
             rawLines[0].split(":")[1].split(" ").filter { it != "" }.map { it.toLong() }
-        val seedToLocationChain: List<ChainLink> = convertRawLinesToSeedLocationChain(rawLines)
+        val cropParameterMappingSteps: List<CropParameterCompatibilityMapping> = convertRawLinesToSeedLocationChain(rawLines)
 
         return inputSeeds.map {
             var result: Long = it
-            seedToLocationChain.forEach { result = processNumber(result, it) }
+            cropParameterMappingSteps.forEach { result = computeCropParameterForCurrentCropStep(result, it) }
             result
         }.min()
     }
 
-    fun convertRawLinesToSeedLocationChain(rawLines: List<String>): List<ChainLink> {
-        val seedToLocationChain: List<ChainLink> =
+    fun convertRawLinesToSeedLocationChain(rawLines: List<String>): List<CropParameterCompatibilityMapping> {
+        val seedToLocationChain: List<CropParameterCompatibilityMapping> =
             rawLines.filterIndexed() { i, _ -> i != 0 }.filter { it.isNotEmpty() }
                 .fold(mutableListOf()) { acc, rawline ->
                     if (acc.isEmpty() || !rawline[0].isDigit()) {
-                        acc.add(ChainLink(link = mutableListOf()))
+                        acc.add(CropParameterCompatibilityMapping(cropParameter = mutableListOf()))
                     } else {
                         val bounds = XToLocationBounds.fromLine(rawline)
-                        acc.last().link.add(Conversion.fromXToLocationBounds(bounds))
+                        acc.last().cropParameter.add(Conversion.fromXToLocationBounds(bounds))
                     }
                     acc
                 }
         return seedToLocationChain
     }
 
-    private fun processNumber(result: Long, conversions: ChainLink): Long {
-        val conversion = conversions.link.filter { result in it.sourceRange }
+    private fun computeCropParameterForCurrentCropStep(cropId: Long, conversions: CropParameterCompatibilityMapping): Long {
+        val conversion = conversions.cropParameter.filter { cropId in it.sourceRange }
         return if (conversion.size == 1) {
-            result + conversion[0].offset
-        } else result
+            cropId + conversion[0].offset
+        } else cropId
     }
 
     fun solveP2(s: String): Long {
