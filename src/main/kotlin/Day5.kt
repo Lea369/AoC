@@ -16,7 +16,7 @@ class Day5 {
         }.min()
     }
 
-    private fun extractAssociationTables(rawLines: List<String>): List<AssociationTable> {
+    fun extractAssociationTables(rawLines: List<String>): List<AssociationTable> {
         val associationTableChain: List<AssociationTable> =
             rawLines.filterIndexed() { i, _ -> i != 0 }.filter { it.isNotEmpty() }
                 .fold(mutableListOf()) { tableChain, rawline ->
