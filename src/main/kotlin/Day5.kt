@@ -26,7 +26,7 @@ class Day5 {
                         val rawlist = rawline.split(" ").filter { it.isNotEmpty() }.map { it.toLong() }
                         tableChain.last().values.add(
                             Association(
-                                rawlist[1]..rawlist[1] + rawlist[2],
+                                rawlist[1]..< rawlist[1] + rawlist[2],
                                 rawlist[0] - rawlist[1]
                             )
                         )

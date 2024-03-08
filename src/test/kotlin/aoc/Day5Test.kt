@@ -16,8 +16,8 @@ class Day5Test {
 
         val expectedSeedToSoilLink =
             Day5.AssociationTable(mutableListOf(
-                Day5.Association(compatibilityRange = 98L..100L, offset = -48),
                 Day5.Association(compatibilityRange = 50L..97L, offset = 2),
+                Day5.Association(compatibilityRange = 98L..100L, offset = -48),
             ))
 
         assertThat(actualSeedToSoilChain).containsExactly(expectedSeedToSoilLink);
