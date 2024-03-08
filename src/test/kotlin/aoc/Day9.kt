@@ -16,12 +16,12 @@ class Day9 {
 
         @Test
         fun testPart1() {
-            assertEquals(1938731307, day9.solveP1("./src/test/resources/2023/input9"))
+            assertEquals(1938731307, day9.solveP1("./src/test/resources/input9"))
         }
 
         @Test
         fun testPart2() {
-            assertEquals(948, day9.solveP2("./src/test/resources/2023/input9"))
+            assertEquals(948, day9.solveP2("./src/test/resources/input9"))
         }
 
         @Test

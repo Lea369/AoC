@@ -21,14 +21,13 @@ class Day8 {
 
         @Test
         fun testPart1() {
-            assertEquals(6, day8.solveP1("./src/test/resources/2023/inputExample8"))
+            assertEquals(6, day8.solveP1("./src/test/resources/inputExample8"))
         }
 
         @Test
         fun testPart2() {
-            assertEquals(BigInteger.valueOf(6L), day8.solveP2("./src/test/resources/2023/input8"))
+            assertEquals(BigInteger.valueOf(6L), day8.solveP2("./src/test/resources/inputExample8"))
         }
-
     }
 
     private fun solveP1(s: String): Int {

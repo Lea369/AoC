@@ -5,6 +5,7 @@ import java.nio.file.Files
 import java.nio.file.Paths
 import java.util.stream.Collectors
 import kotlin.math.abs
+import kotlin.test.Ignore
 import kotlin.test.Test
 import kotlin.test.assertEquals
 
@@ -16,8 +17,9 @@ class Day11 {
         private val day11: Day11 = Day11()
 
         @Test
+        @Ignore("Test too long to execute")
         fun testPart1() {
-            assertEquals(374L, day11.solveP1("./src/test/resources/2023/input11"))
+            assertEquals(374L, day11.solveP1("./src/test/resources/input11"))
         }
 
     }

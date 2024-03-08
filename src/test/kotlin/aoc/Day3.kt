@@ -17,7 +17,7 @@ class Day3 {
         @Test
         fun testPart1() {
             val expected = 467835
-            assertEquals(expected, day3.solveP2("./src/test/resources/input3"))
+            assertEquals(expected, day3.solveP2("./src/test/resources/inputExample3"))
         }
 
         @Test
