@@ -49,11 +49,9 @@ class Day5 {
     }
 
     fun solveP2(s: String): Long {
-        val rawLines: List<String> = Files.lines(Paths.get(s)).collect(Collectors.toList())
+        val rawLines: List<String> = readCropFile(s)
 
-        val inputRanges: List<LongRange> = rawLines[0].split(":")[1].split(" ")
-            .filter { it != "" }
-            .map { it.toLong() }
+        val inputRanges: List<LongRange> = extractSeedIds(rawLines)
             .chunked(2)
             .map { it.first()..it.first() + it.last() }
 
