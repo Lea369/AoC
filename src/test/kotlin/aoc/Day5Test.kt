@@ -8,20 +8,22 @@ class Day5Test {
     private val day5 = Day5()
 
     @Test
-    fun testPart1() {
-        val expected = 107430936L
+    fun should_findMinimumLocationIdForSeed_FromSimpleSeedIds() {
+        val expectedLocationId = 107430936L
+
         assertEquals(
-            expected, day5.solveP1(
+            expectedLocationId, day5.findMinimumLocationIdForSeed(
                 "./src/test/resources/input5"
             )
         )
     }
 
     @Test
-    fun testPart2() {
-        val expected = 46L
+    fun should_findMinimumLocationIdForSeed_FromSeedRanges() {
+        val expectedLocationId = 46L
+
         assertEquals(
-            expected, day5.solveP2(
+            expectedLocationId, day5.solveP2(
                 "./src/test/resources/inputExample5"
             )
         )
